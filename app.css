@@ -1,0 +1,72 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    background: #2e2e2e;
+    color: #dedede;
+    font-family: Arial, sans-serif;
+}
+
+
+.main {
+    margin-right: auto;
+    margin-left: auto;
+    width: 640px;
+}
+
+#visual {
+
+    margin-left: 5px;
+    height: 164px;
+}
+
+
+#container {
+    vertical-align: middle;
+    display: inline-block;
+    align-self: center;
+}
+
+.board {
+    border: 1px solid #dedede;
+    border-radius: 2px;
+    display: inline-block;
+    padding: 3px;
+}
+
+.game {
+    display: flex;
+    color: #fefefe;
+    flex-direction: column;
+    float: left;
+    background: #dedede;
+    box-shadow: inset 0px 0px 0px 1px rgb(48, 48, 48);
+}
+
+.game .row {
+    display: flex;
+    flex-direction: row;
+    float: left;
+}
+
+.game .cell {
+    height: 80px;
+    width: 80px;
+    background: #2e2e2e;
+    margin: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.highlight {
+    background: #dedede !important;
+}
+
+.game .cell span {
+    align-self: center;
+    vertical-align: middle;
+    font-family: Arial;
+    font-size: 18px;
+
+}
+

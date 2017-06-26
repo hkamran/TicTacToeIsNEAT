@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<title>Test</title>
+		<meta name="description" content="">
+	    <meta charset="utf-8">
+		<meta name="referrer" content="no-referrer">
+		<link rel="stylesheet" href="app.css">
+	</head>
+	<body>
+		<div class="main">
+			<h3>Tic Tac Toe is N.E.A.T</h3>
+			<div style="margin-bottom: 10px; display: flex; flex-direction: row">
+				<div onclick="clickTrain()" style="height: 18px; font-size: 14px; margin-right: 10px; cursor: pointer; user-select: none; padding: 5px; width: 37px; border-radius: 2px; border: 1px solid #dedede;">Train</div>
+				<div style="height: 28px; width: 100px; cursor: pointer; user-select: none; border-radius: 2px; border: 1px solid #dedede">
+					<input id="iterationNum" style="
+						width: 100%;
+						padding: 0px;
+						margin: 0px;
+						background: #2e2e2e;
+						border: 0px;
+						height: 100%;
+						color: #dedede;
+						font-size: 14px;
+						padding: 5px;
+						box-sizing: border-box;" value="100">
+				</div>
+				<div style="flex-grow: 1"></div>
+				<div onclick="tryElite()" style="height: 18px; font-size: 14px; margin-right: 10px; cursor: pointer; user-select: none; padding: 5px; width: 30px; border-radius: 2px; border: 1px solid #dedede;">Play</div>
+			</div>
+
+			<div id="trainer" style="width: 631px">
+				<div style="height: 3px; margin-bottom: 10px; width: 100%; border-radius: 5px; ">
+					<div id="progress" style="height: 100%; width: 20%; background: #82de41"></div>
+				</div>
+				<div id="info" style="margin-bottom: 20px; font-size: 14px ">
+
+				</div>
+				<div style="display: flex; justify-content: flex-start; margin-bottom: 30px;">
+					<div id="container"></div>
+					<div style="padding: 10px; padding-top: 0px; border: 1px solid #dedede; margin-left: 30px; ">
+						<div><h5 style="margin-top: 10px; margin-bottom: 40px;">Neural Network</h5></div>
+						<div><canvas id="visual" style="height: 160px;"></canvas></div>
+					</div>
+				</div>
+				<div style="padding: 10px; padding-top: 0px; border: 1px solid #dedede;">
+					<div><h5 style="margin-top: 10px; margin-bottom: 20px;">Best Fitness</h5></div>
+					<div id="fitnessContainer"><canvas id="fitnessChart" style="height: 160px;"></canvas></div>
+				</div>
+			</div>
+
+			<div id="play" style="display: flex; justify-content: center; display: none">
+				<div id="game"></div>
+			</div>
+		</div>
+
+
+
+
+		<script
+				src="https://code.jquery.com/jquery-3.2.1.min.js"
+				integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+				crossorigin="anonymous"></script>
+		<script src="https://code.highcharts.com/highcharts.src.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+
+        <script src="cerebrum.js" defer></script>
+        <script src="game.js" defer></script>
+		<script src="ui.js" defer></script>
+        <script src="ai.js" defer></script>
+	</body>
+</html>
