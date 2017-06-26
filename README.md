@@ -1,5 +1,5 @@
 # TicTacToeIsNEAT
 Applying neuroevolution to Tic-Tac-Toe
 
-##Demo
+## Demo
 http://hkamran.info/projects/tictactoeneat
