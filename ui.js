@@ -2,97 +2,165 @@
  * Created by hkamran on 6/25/2017.
  */
 
-var training = false;
-var ctx = document.getElementById('fitnessChart').getContext('2d');
-var trainerHTML = document.getElementById("trainer");
-var playHTML = document.getElementById("play");
+function UI() {
+    this.training = false;
+    this.titleHTML = document.getElementById("title");
+    this.trainerTabHTML = document.getElementById("trainer");
+    this.playTabHTML = document.getElementById("play");
+    this.fitnessCtx = document.getElementById('fitnessChart').getContext('2d');
+    this.progressHTML = document.getElementById("progress");
+    this.progressHTML.setAttribute("style", "");
 
-function clickTrain() {
-    trainerHTML.setAttribute("style", "display: block");
-    playHTML.setAttribute("style", "display: none");
+    this.infoHTML = document.getElementById("info");
+    this.fitnessCounter = 0;
+    this.score = {
+        player1 : 0,
+        player2 : 0
+    };
 
-    if (training) return;
-    training = true;
-    var num = document.getElementById('iterationNum').value;
-    ga.train(num, function() {
-        training = false;
-    }.bind(this));
+    this.vsGame = new Game("game", 3, 3);
 }
 
-var data = {
-    datasets: [
-        {
-            fill: false,
-            borderColor: "#DEDEDE",
-            backgroundColor: "#DEDEDE",
-            pointRadius: 0
-        },
-    ]
+UI.prototype.openTrainingTab = function() {
+    this.trainerTabHTML.setAttribute("style", "display: block");
+    this.playTabHTML.setAttribute("style", "display: none");
 };
 
-var counter = 0;
-var fitnessChart = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-        legend: {
-            display: false
-        },
+UI.prototype.openPlayingTab = function() {
+    this.trainerTabHTML.setAttribute("style", "display: none");
+    this.playTabHTML.setAttribute("style", "display: block");
+};
 
-        scales: {
-            xAxes: [{
-                ticks: {
-                    display: false
-                },
-                gridLines: {
-                    color: "rgba(0, 0, 0, 0)",
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                    display: true,
-                    max: 100,
-                    beginAtZero: true,
-                    stepSize: 10,
-
-                },
-                gridLines: {
-                    color: "#4f4f4f",
-                }
-            }],
-        },
-        elements: {
-            line: {
-                tension: 0, // disables bezier curves
-            }
-        }
-    }
-});
-
-function addData(data) {
-    fitnessChart.data.labels.push(counter++);
-    fitnessChart.data.datasets.forEach(function(dataset) {
-        dataset.data.push(data);
-    });
-    fitnessChart.update();
+UI.prototype.resetScore = function() {
+    this.score = {
+        player1 : 0,
+        player2 : 0
+    };
 }
 
-var game = new Game("game", 3, 3);
+UI.prototype.playVsNeural = function() {
+    this.openPlayingTab();
 
-function tryElite() {
-    trainerHTML.setAttribute("style", "display: none");
-    playHTML.setAttribute("style", "display: block");
+    this.vsGame.reset();
+    this.vsGame.players = [];
+    this.vsGame.id = [];
 
-    game.reset();
-    game.players = [];
-    game.id = [];
 
     var player1 = new RandomAI();
-    var player2 = new NeuroNetwork(ga.neuroevolution.getElite().getNetwork());
+    var player2 = new NeuralNetwork(ga.neuroevolution.getElite().getNetwork());
 
-    game.addPlayer(player1);
-    game.addPlayer(player2);
 
-    game.play();
+    this.vsGame.addPlayer(player1);
+    this.vsGame.addPlayer(player2);
+
+    this.setScoreTitle(player1, player2);
+    var result = this.vsGame.play();
+    if (result == player1.id) {
+        this.score.player1++;
+    } else {
+        this.score.player2++;
+    }
+
+    this.updateScore();
 }
 
+UI.prototype.train = function() {
+    this.openTrainingTab();
+
+    if (this.training) return;
+    this.training = true;
+    var num = document.getElementById('iterationNum').value;
+    ga.train(num, function() {
+        this.training = false;
+    }.bind(this));
+};
+
+UI.prototype.createFitnessChart = function () {
+    var data = {
+        datasets: [
+            {
+                fill: false,
+                borderColor: "#DEDEDE",
+                backgroundColor: "#DEDEDE",
+                pointRadius: 0
+            },
+        ]
+    };
+
+    this.fitnessCounter = 0;
+    this.fitnessChart = new Chart(this.fitnessCtx, {
+        type: 'line',
+        data: data,
+        options: {
+            legend: {
+                display: false
+            },
+
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        display: false
+                    },
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        display: true,
+                        max: 100,
+                        beginAtZero: true,
+                        stepSize: 10,
+
+                    },
+                    gridLines: {
+                        color: "#4f4f4f",
+                    }
+                }],
+            },
+            elements: {
+                line: {
+                    tension: 0, // disables bezier curves
+                }
+            }
+        }
+    });
+};
+
+
+UI.prototype.addFitnessData = function(data) {
+    this.fitnessChart.data.labels.push(this.fitnessCounter++);
+    this.fitnessChart.data.datasets.forEach(function(dataset) {
+        dataset.data.push(data);
+    });
+    this.fitnessChart.update();
+};
+
+UI.prototype.setProgressBar = function(percentage) {
+    this.progressHTML.setAttribute("style", "height: 100%; width: " + percentage + "%; background: #82de41")
+}
+
+UI.prototype.updateInfo = function() {
+    this.infoHTML.innerHTML = "Generation: " + ga.neuroevolution.currentGeneration +
+        ", Population size: " + ga.neuroevolution.populationSize +
+        ", Species: " + ga.neuroevolution.species.length;
+};
+
+UI.prototype.setTitle = function(player1, player2) {
+    this.titleHTML.innerHTML = "<span style='color:" + player1.color + "'>" + player1.name + " (" + player1.marker + ")</span>" +
+        " vs " + "<span style='color:" + player2.color + "'>" + player2.name + " (" + player2.marker + ")</span>";
+};
+
+UI.prototype.setScoreTitle = function(player1, player2) {
+    document.getElementById("playScore1Title").innerHTML = "<span style='color:" + player1.color + "'>" + player1.name + " (" + player1.marker + ")</span>";
+    document.getElementById("playScore2Title").innerHTML = "<span style='color:" + player2.color + "'>" + player2.name + " (" + player2.marker + ")</span>";
+};
+
+UI.prototype.updateScore = function() {
+    document.getElementById("player1Score").innerHTML = this.score.player1;
+    document.getElementById("player2Score").innerHTML = this.score.player2;
+}
+
+
+var ui = new UI();
+ui.createFitnessChart();

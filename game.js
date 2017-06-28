@@ -1,23 +1,50 @@
-function NeuroNetwork(network) {
-    this.label = "";
+function Human() {
+	this.name = "Human";
+    this.marker = "";
+    this.id = "";
+    this.color = "";
+    this.selected = "";
+};
+
+Human.prototype.setMarker = function (label) {
+    this.marker = label;
+};
+
+Human.prototype.setId = function(id) {
+    this.id = id;
+};
+
+Human.prototype.setColor = function(color) {
+    this.color = color;
+};
+
+Human.prototype.play = function(cells) {
+
+    return 0;
+};
+
+
+function NeuralNetwork(network) {
+	this.name = "Neural AI"
+    this.marker = "";
     this.id = "";
     this.color = "";
     this.network = network;
 };
 
-NeuroNetwork.prototype.setLabel = function(label) {
-    this.label = label;
+NeuralNetwork.prototype.setMarker = function(label) {
+    this.marker = label;
 };
 
-NeuroNetwork.prototype.setId = function(id) {
+NeuralNetwork.prototype.setId = function(id) {
     this.id = id;
 };
 
-NeuroNetwork.prototype.setColor = function(color) {
+NeuralNetwork.prototype.setColor = function(color) {
     this.color = color;
 };
 
-NeuroNetwork.prototype.play = function(cells) {
+NeuralNetwork.prototype.play = function(cells) {
     var inputs = [];
     var array = [];
 	for (var y = 0; y < cells.length; y++) {
@@ -65,13 +92,14 @@ NeuroNetwork.prototype.play = function(cells) {
 };
 
 function RandomAI() {
-    this.label = "";
+	this.name = "Random AI";
+    this.marker = "";
     this.id = "";
     this.color = "";
 };
 
-RandomAI.prototype.setLabel = function(label) {
-    this.label = label;
+RandomAI.prototype.setMarker = function(label) {
+    this.marker = label;
 };
 
 RandomAI.prototype.setId = function(id) {
@@ -104,13 +132,13 @@ RandomAI.prototype.getRandomInt = function(min, max) {
 };
 
 function Human() {
-	this.label = "";
+	this.marker = "";
 	this.id = "";
 	this.color = "";
 }
 
-Human.prototype.setLabel = function(label) {
-	this.label = label;
+Human.prototype.setMarker = function(label) {
+	this.marker = label;
 };
 
 Human.prototype.setId = function(id) {
@@ -140,7 +168,7 @@ function Cell(player, x, y, source) {
 
 Cell.prototype.setPlayer = function(player) {
 	this.player = player;
-    this.html.innerHTML = "<span style='color: " + player.color + "'>" + player.label + "</span>";
+    this.html.innerHTML = "<span style='color: " + player.color + "'>" + player.marker + "</span>";
 
 };
 
@@ -204,7 +232,7 @@ Game.prototype.addPlayer = function(player) {
 		this.players.push(player);
 		player.setId(this.id++);
 		player.setColor(this.colors[this.id]);
-        player.setLabel(this.labels[this.id]);
+        player.setMarker(this.labels[this.id]);
 	} else {
 		throw 'Game is filled!';
 	}

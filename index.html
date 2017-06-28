@@ -11,7 +11,7 @@
 		<div class="main">
 			<h3>Tic Tac Toe is N.E.A.T</h3>
 			<div style="margin-bottom: 10px; display: flex; flex-direction: row">
-				<div onclick="clickTrain()" style="height: 18px; font-size: 14px; margin-right: 10px; cursor: pointer; user-select: none; padding: 5px; width: 37px; border-radius: 2px; border: 1px solid #dedede;">Train</div>
+				<div onclick="ui.train()" style="height: 18px; font-size: 14px; margin-right: 10px; cursor: pointer; user-select: none; padding: 5px; width: 37px; border-radius: 2px; border: 1px solid #dedede;">Train</div>
 				<div style="height: 28px; width: 100px; cursor: pointer; user-select: none; border-radius: 2px; border: 1px solid #dedede">
 					<input id="iterationNum" style="
 						width: 100%;
@@ -26,16 +26,15 @@
 						box-sizing: border-box;" value="100">
 				</div>
 				<div style="flex-grow: 1"></div>
-				<div onclick="tryElite()" style="height: 18px; font-size: 14px; margin-right: 10px; cursor: pointer; user-select: none; padding: 5px; width: 30px; border-radius: 2px; border: 1px solid #dedede;">Play</div>
+				<div onclick="ui.resetScore(); ui.playVsNeural()" style="height: 18px; font-size: 14px; margin-right: 10px; cursor: pointer; user-select: none; padding: 5px; width: 30px; border-radius: 2px; border: 1px solid #dedede;">Play</div>
 			</div>
 
 			<div id="trainer" style="width: 631px">
 				<div style="height: 3px; margin-bottom: 10px; width: 100%; border-radius: 5px; ">
 					<div id="progress" style="height: 100%; width: 20%; background: #82de41"></div>
 				</div>
-				<div id="info" style="margin-bottom: 20px; font-size: 14px ">
-
-				</div>
+				<div id="info" style="margin-bottom: 10px; font-size: 14px "></div>
+				<div id="title" style="margin-bottom: 10px;"></div>
 				<div style="display: flex; justify-content: flex-start; margin-bottom: 30px;">
 					<div id="container"></div>
 					<div style="padding: 10px; padding-top: 0px; border: 1px solid #dedede; margin-left: 30px; ">
@@ -49,8 +48,25 @@
 				</div>
 			</div>
 
-			<div id="play" style="display: flex; justify-content: center; display: none">
-				<div id="game"></div>
+			<div id="play" style="justify-content: center; display: none">
+				<div style="display: flex; flex-direction: row">
+					<div id="game"></div>
+					<div  style="margin-left: 10px; display: flex; flex-direction: column; flex-grow: 1">
+						<div class="row"  style="display: flex; flex-direction: row">
+							<div id="playScore1Title" style="width: 50%; border-bottom: 3px solid #dedede">Player 1</div>
+							<div id="playScore2Title" style="width: 50%; border-bottom: 3px solid #dedede">Player 2</div>
+						</div>
+						<div class="row"  style="display: flex; flex-direction: row">
+							<div id="player1Score" style="width: 50%;"></div>
+							<div id="player2Score" style="width: 50%"></div>
+						</div>
+						<div style="flex-grow: 1"></div>
+
+						<div>
+							<div onclick="ui.playVsNeural()" style="margin-bottom: 4px; text-align: center; height: 18px; font-size: 14px; margin-right: 10px; cursor: pointer; user-select: none; padding: 5px; width: 100%; border-radius: 2px; border: 1px solid #dedede;">Retry</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 

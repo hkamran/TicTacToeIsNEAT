@@ -1,16 +1,6 @@
 
 function GA() {
 
-    this.progressHTML = document.getElementById("progress");
-    this.progressHTML.setAttribute("style", "");
-    this.infoHTML = document.getElementById("info");
-    this.updateInfo = function() {
-        this.infoHTML.innerHTML = "Generation: " + this.neuroevolution.currentGeneration +
-            ", Population size: " + this.neuroevolution.populationSize +
-            ", Species: " + this.neuroevolution.species.length;
-    }
-
-    this.counter = 0;
     this.scores = {
         "ai": 0,
         "enemy": 0,
@@ -29,13 +19,13 @@ function GA() {
     });
 
     this.visualizer = new NetworkVisualizer({
-        canvas : "visual", //The id of the canvas element to draw the visualizer on
-        backgroundColor : "#2e2e2e", //The background color of the visualizer
-        nodeRadius : -1, //The node radius [If left at -1, the node radius will be calculated automatically to best fit the dimensions of the visualizer (this is recommended)]
-        nodeColor : "white", //The color of the node (Note: transparency will vary depending on the node's value)
-        positiveConnectionColor : "green", //The color to represent a positive connection
-        negativeConnectionColor : "red", //The color to represent a negative connection
-        connectionStrokeModifier : 0.3 //The maximum stroke to draw the connection line with (Note: stroke varies based on connection weight)
+        canvas : "visual",
+        backgroundColor : "#2e2e2e",
+        nodeRadius : -1,
+        nodeColor : "white",
+        positiveConnectionColor : "green",
+        negativeConnectionColor : "red",
+        connectionStrokeModifier : 0.3
     });
 
     this.neuroevolution.fitnessFunction = function(network) {
@@ -45,7 +35,7 @@ function GA() {
         for (var i = 0; i < iteration; i++) {
 
             var player1 = new RandomAI();
-            var player2 = new NeuroNetwork(network);
+            var player2 = new NeuralNetwork(network);
 
             this.game.reset();
             this.game.players = [];
@@ -55,6 +45,7 @@ function GA() {
 
             var winner = this.game.play();
 
+            ui.setTitle(player1, player2);
 
             if (winner == -1) { //loss
                 this.scores.ties++;
@@ -77,8 +68,6 @@ function GA() {
         return avg;
     }.bind(this);
 
-    this.neuroevolution.createInitialPopulation();
-
     this.train = function(i, callback) {
         this._train(i, i, callback);
     };
@@ -91,18 +80,18 @@ function GA() {
             if (i % 10 === 0) {
                 var elite = ga.neuroevolution.getElite();
                 ga.visualizer.drawNetwork(elite.getNetwork());
-                ga.updateInfo();
-                addData(elite.fitness);
+                ui.updateInfo();
+                ui.addFitnessData(elite.fitness);
             }
 
             var percentage = ((total-i)/total) * 100;
-            ga.progressHTML.setAttribute("style", "height: 100%; width: " + percentage + "%; background: #82de41")
+            ui.setProgressBar(percentage);
             if (--i) {
                 this._train(i, total, callback);
             } else {
 
-                ga.updateInfo();
-                ga.progressHTML.setAttribute("style", "height: 100%; width: 0%; background: #82de41");
+                ui.updateInfo();
+                ui.setProgressBar(0);
                 callback();
             }
         }.bind(this);
@@ -110,8 +99,7 @@ function GA() {
         setTimeout(execute, 10);
     }.bind(this);
 
-    this.updateInfo();
-
+    this.neuroevolution.createInitialPopulation();
 }
 
 var ga = new GA();
