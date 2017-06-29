@@ -46,8 +46,8 @@ UI.prototype.playVsNeural = function() {
     this.vsGame.id = [];
 
 
-    var player1 = new RandomAI();
-    var player2 = new NeuralNetwork(ga.neuroevolution.getElite().getNetwork());
+    var player2 = new RandomAI();
+    var player1 = new NeuralNetwork(ga.neuroevolution.getElite().getNetwork());
 
 
     this.vsGame.addPlayer(player1);
