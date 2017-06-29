@@ -8,4 +8,4 @@ The fitness is determined by summing up 100 games agianst the random A.I. Each l
 Modern browsers only with strong preference to Chrome.
 
 ## Demo
-http://hkamran.info/projects/tictactoeneat
+http://hkamran.info/projects/tictactoeisneat
